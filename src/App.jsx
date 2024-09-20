@@ -93,8 +93,8 @@ function InvoiceForm() {
 
   return (
     <div className="mt-20 max-w-4xl mx-auto p-6 border-2 border-gray-300 rounded-lg shadow-lg invoice-container">
-      <div className="flex justify-between items-start">
-        <div className="flex">
+      <div className="flex flex-col md:flex-row justify-between items-start">
+        <div className="flex flex-col md:flex-row">
           <div
             className="border-2 hover:border-solid border-dashed border-blue-300 cursor-pointer rounded-lg p-4 flex flex-col items-center justify-center"
             onClick={() => document.getElementById("file-upload").click()}
@@ -134,13 +134,13 @@ function InvoiceForm() {
         </div>
       </div>
 
-      <div className="mt-5 flex flex-col space-y-3 w-1/2 p-1">
+      <div className="mt-5 flex flex-col space-y-3 md:w-1/2">
         {["Your Company", "Your Name", "Company's GSTIN", "Company's Address", "City", "State", "Country"].map((placeholder, index) => (
           <input key={index} type="text" className="outline-none border py-1 border-transparent hover:border-blue-300 transition" placeholder={placeholder} />
         ))}
       </div>
 
-      <div className="mt-10 flex flex-row justify-between">
+      <div className="mt-10 flex flex-col md:flex-row justify-between">
         <div className="flex flex-col space-y-3">
           <h2 className="font-bold">Bill To:</h2>
           {["Your Client's Company", "Client's GSTIN", "Client's Address", "City", "State", "Country"].map((placeholder, index) => (
@@ -167,114 +167,114 @@ function InvoiceForm() {
         <input type="text" className="outline-none border border-transparent hover:border-blue-300 transition flex-1" placeholder="State" />
       </div>
 
-      <div className="mt-8">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="text-left bg-black text-white">
-              <th className="p-2">Item Description</th>
-              <th>Qty</th>
-              <th>Rate</th>
-              <th>SGST</th>
-              <th>CGST</th>
-              <th>Cess</th>
-              <th className="p-2">Amount</th>
-              <th className="p-2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lineItems.map((item, index) => (
-              <tr key={index} className="border-b">
-                <td>
-                  <input
-                    type="text"
-                    placeholder="Enter item name/description"
-                    value={item.description}
-                    onChange={(e) => handleLineItemChange(index, "description", e.target.value)}
-                    className="outline-none w-[50%] mt-2 border border-transparent hover:border-blue-300 transition"
-                  />
-                  <input
-                    type="text"
-                    placeholder="HSN/SAC"
-                    value={item.hsnSac}
-                    onChange={(e) => handleLineItemChange(index, "hsnSac", e.target.value)}
-                    className="outline-none w-full mt-4 mb-4 border border-transparent hover:border-blue-300 transition"
-                  />
-                </td>
+     <div className="mt-8 overflow-x-auto">
+  <table className="w-full table-auto">
+    <thead>
+      <tr className="text-left bg-black text-white">
+        <th className="p-2">Item Description</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>SGST</th>
+        <th>CGST</th>
+        <th>Cess</th>
+        <th className="p-2">Amount</th>
+        <th className="p-2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {lineItems.map((item, index) => (
+        <tr key={index} className="border-b">
+          <td>
+            <input
+              type="text"
+              placeholder="Enter item name/description"
+              value={item.description}
+              onChange={(e) => handleLineItemChange(index, "description", e.target.value)}
+              className="outline-none w-[50%] mt-2 border border-transparent hover:border-blue-300 transition"
+            />
+            <input
+              type="text"
+              placeholder="HSN/SAC"
+              value={item.hsnSac}
+              onChange={(e) => handleLineItemChange(index, "hsnSac", e.target.value)}
+              className="outline-none w-full mt-4 mb-4 border border-transparent hover:border-blue-300 transition"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              value={item.qty}
+              onChange={(e) => handleLineItemChange(index, "qty", parseFloat(e.target.value))}
+              className="outline-none w-16 text-right border border-transparent hover:border-blue-300 transition"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={item.rate}
+              onChange={(e) => handleLineItemChange(index, "rate", parseFloat(e.target.value))}
+              className="outline-none w-20 text-right border border-transparent hover:border-blue-300 transition"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              value={item.sgst}
+              onChange={(e) => handleLineItemChange(index, "sgst", parseFloat(e.target.value))}
+              className="outline-none w-16 text-right border border-transparent hover:border-blue-300 transition"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              value={item.cgst}
+              onChange={(e) => handleLineItemChange(index, "cgst", parseFloat(e.target.value))}
+              className="outline-none w-16 text-right border border-transparent hover:border-blue-300 transition"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              value={item.cess}
+              onChange={(e) => handleLineItemChange(index, "cess", parseFloat(e.target.value))}
+              className="outline-none w-16 text-right border border-transparent hover:border-blue-300 transition"
+            />
+          </td>
+          <td className="text-right">{item.amount.toFixed(2)}</td>
+          <td className="text-right">
+            <button onClick={() => deleteLineItem(index)} className="text-red-500 hover:underline">Delete</button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
 
-                <td>
-                  <input
-                    type="number"
-                    value={item.qty}
-                    onChange={(e) => handleLineItemChange(index, "qty", parseFloat(e.target.value))}
-                    className="outline-none w-16 text-right border border-transparent hover:border-blue-300 transition"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    value={item.rate}
-                    onChange={(e) => handleLineItemChange(index, "rate", parseFloat(e.target.value))}
-                    className="outline-none w-20 text-right border border-transparent hover:border-blue-300 transition"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={item.sgst}
-                    onChange={(e) => handleLineItemChange(index, "sgst", parseFloat(e.target.value))}
-                    className="outline-none w-16 text-right border border-transparent hover:border-blue-300 transition"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={item.cgst}
-                    onChange={(e) => handleLineItemChange(index, "cgst", parseFloat(e.target.value))}
-                    className="outline-none w-16 text-right border border-transparent hover:border-blue-300 transition"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={item.cess}
-                    onChange={(e) => handleLineItemChange(index, "cess", parseFloat(e.target.value))}
-                    className="outline-none w-16 text-right border border-transparent hover:border-blue-300 transition"
-                  />
-                </td>
-                <td className="text-right">{item.amount.toFixed(2)}</td>
-                <td className="text-right">
-                  <button onClick={() => deleteLineItem(index)} className="text-red-500 hover:underline">Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+  <div  className=" flex flex-col md:flex-row justify-between items-center mt-[20%] lg:mt-[1%] md:mt-[1%]">
+    <button onClick={addLineItem} className="text-blue-500 -mt-[16%] rounded-lg">
+      + Add Line Item
+    </button>
 
-        <div className="mt-2 flex justify-between items-center">
-          <button onClick={addLineItem} className="text-blue-500 -mt-[16%] rounded-lg">
-            + Add Line Item
-          </button>
-
-          <div className="w-[30vw] flex flex-col justify-between">
-            <div className="mt-2 flex justify-between">
-              <span className="text-gray-600">Subtotal</span>
-              <span>{calculateSubtotal().toFixed(2)}</span>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <span className="text-gray-600">SGST(6%)</span>
-              <span>{calculateTax("sgst").toFixed(2)}</span>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <span className="text-gray-600">CGST(6%)</span>
-              <span>{calculateTax("cgst").toFixed(2)}</span>
-            </div>
-            <div className="mt-2 flex justify-between bg-gray-100 py-3 rounded-xl px-1">
-              <span className="text-gray-600">TOTAL</span>
-              <span>{calculateTotal().toFixed(2)}</span>
-            </div>
-          </div>
-        </div>
+    <div className="w-full md:w-[30vw] flex flex-col justify-between">
+      <div className="mt-2 flex justify-between">
+        <span className="text-gray-600">Subtotal</span>
+        <span>{calculateSubtotal().toFixed(2)}</span>
       </div>
+      <div className="mt-2 flex justify-between">
+        <span className="text-gray-600">SGST(6%)</span>
+        <span>{calculateTax("sgst").toFixed(2)}</span>
+      </div>
+      <div className="mt-2 flex justify-between">
+        <span className="text-gray-600">CGST(6%)</span>
+        <span>{calculateTax("cgst").toFixed(2)}</span>
+      </div>
+      <div className="mt-2 flex justify-between bg-gray-100 py-3 rounded-xl px-1">
+        <span className="text-gray-600">TOTAL</span>
+        <span>{calculateTotal().toFixed(2)}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
       <div className="mt-4">
         <h4>Notes</h4>
         <input type="text" className="text-black w-full mt-2 outline-none border-2 border-transparent hover:border-blue-300 transition" placeholder="It was great doing business with you." />
